@@ -1,397 +1,505 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Live Cricket Scorer — GitHub Pages Friendly</title>
-  <style>
-    :root{--bg:#0f1724;--card:#0b1220;--muted:#94a3b8;--accent:#10b981;--danger:#ef4444}
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,#071026 0%, #0b1220 100%);color:#e6eef8;padding:24px}
-    .wrap{max-width:1000px;margin:0 auto}
-    h1{font-size:20px;margin:0 0 12px}
-    .card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
-    .row{display:flex;gap:12px;align-items:center}
-    .row.space{justify-content:space-between}
-    label{font-size:13px;color:var(--muted)}
-    input,select,button{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit;padding:8px;border-radius:8px}
-    table{width:100%;border-collapse:collapse;margin-top:8px}
-    th,td{padding:8px;text-align:left;border-bottom:1px dashed rgba(255,255,255,0.03)}
-    .btn{cursor:pointer;padding:8px 12px;border-radius:8px}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),#06a77d);color:#001; border:none}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
-    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .small{font-size:13px;padding:6px}
-    .strike{font-weight:700}
-    .muted{color:var(--muted)}
-    .danger{color:var(--danger)}
-    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-    .stat{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
-    .actions{display:flex;gap:8px;margin-top:8px}
-    .controls button{min-width:46px}
-    .kbd{font-size:12px;background:#071326;padding:6px;border-radius:6px}
-    .footer-note{font-size:13px;color:var(--muted);margin-top:8px}
-    @media(max-width:720px){.row{flex-direction:column}.stats-grid{grid-template-columns:repeat(2,1fr)}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Live Score Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .match-info {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .teams {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .team {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            width: 48%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .team-name {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .team-score {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+        
+        .batsmen, .bowlers {
+            margin-top: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+        }
+        
+        .player {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .player-name {
+            display: flex;
+            align-items: center;
+        }
+        
+        .striker-indicator {
+            color: #ffcc00;
+            margin-left: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .player-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .stat {
+            min-width: 40px;
+            text-align: right;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        button {
+            background: #ffcc00;
+            color: #333;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            background: #ffd84d;
+            transform: translateY(-2px);
+        }
+        
+        .wicket-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .wicket-btn:hover {
+            background: #c0392b;
+        }
+        
+        .over-progress {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .ball {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        
+        .ball.wicket {
+            background: #e74c3c;
+        }
+        
+        .ball.six {
+            background: #2ecc71;
+        }
+        
+        .ball.four {
+            background: #3498db;
+        }
+        
+        .recent-overs {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .overs-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .over {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .new-player-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: #1a2a6c;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .player-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .teams {
+                flex-direction: column;
+            }
+            
+            .team {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .match-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .controls {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Live Cricket Scorer</h1>
-
-    <div class="card" id="match-setup">
-      <div class="row space">
-        <div>
-          <label>Team batting</label>
-          <input id="team-name" placeholder="Team A" />
-        </div>
-        <div>
-          <label>Overs (max)</label>
-          <input id="max-overs" type="number" value="20" min="1" style="width:100px" />
-        </div>
-        <div>
-          <label>Target (optional)</label>
-          <input id="target" type="number" placeholder="--" style="width:120px" />
-        </div>
-        <div style="display:flex;gap:8px;align-items:end">
-          <button class="btn primary" id="new-match">Start / Reset Match</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="scoreboard">
-      <div class="row space">
-        <div>
-          <div class="muted">Team</div>
-          <div style="font-size:18px;font-weight:700" id="team-title">Team A</div>
-        </div>
-        <div>
-          <div class="muted">Score</div>
-          <div style="font-size:22px;font-weight:800" id="score-display">0/0 (0.0)</div>
-        </div>
-        <div>
-          <div class="muted">Run Rate</div>
-          <div id="runrate">0.00</div>
-        </div>
-        <div>
-          <div class="muted">Target</div>
-          <div id="target-display">-</div>
-        </div>
-      </div>
-
-      <div style="margin-top:12px">
-        <div class="row">
-          <div style="flex:1">
-            <div class="muted">Batsmen</div>
-            <table id="batsmen-table">
-              <thead><tr><th>Name</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-
-          <div style="width:320px;margin-left:12px">
-            <div class="muted">Current Over & Bowler</div>
-            <div class="card" style="padding:10px;margin-top:8px;background:rgba(255,255,255,0.02)">
-              <div class="row">
-                <div style="flex:1">
-                  <label>Current Bowler</label>
-                  <input id="bowler-name" placeholder="Bowler 1" />
-                </div>
-                <div style="width:120px">
-                  <label>Overs</label>
-                  <input id="bowler-overs" type="text" readonly value="0.0" style="width:100%" />
-                </div>
-              </div>
-              <div class="row" style="margin-top:8px">
-                <div style="flex:1">
-                  <div class="muted">Bowler stats</div>
-                  <div style="display:flex;gap:8px;margin-top:6px">
-                    <div class="stat"><div class="muted">O</div><div id="b_o">0</div></div>
-                    <div class="stat"><div class="muted">M</div><div id="b_m">0</div></div>
-                    <div class="stat"><div class="muted">R</div><div id="b_r">0</div></div>
-                    <div class="stat"><div class="muted">W</div><div id="b_w">0</div></div>
-                  </div>
-                </div>
-                <div style="width:120px">
-                  <label>Balls this over</label>
-                  <input id="balls-this-over" readonly value="0" />
-                </div>
-              </div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-baseball-ball"></i> Cricket Live Score</h1>
+            <p>Real-time cricket scoring application</p>
+        </header>
+        
+        <div class="match-info">
+            <div class="venue">
+                <i class="fas fa-map-marker-alt"></i> Melbourne Cricket Ground
             </div>
-
-            <div style="margin-top:10px">
-              <div class="muted">Actions</div>
-              <div class="controls" id="run-buttons">
-                <button class="btn ghost small" data-run="0">0</button>
-                <button class="btn ghost small" data-run="1">1</button>
-                <button class="btn ghost small" data-run="2">2</button>
-                <button class="btn ghost small" data-run="3">3</button>
-                <button class="btn ghost small" data-run="4">4</button>
-                <button class="btn ghost small" data-run="5">5</button>
-                <button class="btn ghost small" data-run="6">6</button>
-                <button class="btn ghost small" id="dot">.</button>
-                <button class="btn ghost small" id="wide">WIDE</button>
-                <button class="btn ghost small" id="noball">NB</button>
-                <button class="btn ghost small" id="bye">BYE</button>
-              </div>
-
-              <div class="actions">
-                <button class="btn primary" id="wicket">Wicket</button>
-                <button class="btn ghost" id="end-over">End Over</button>
-                <button class="btn ghost" id="swap-strike">Swap Strike</button>
-              </div>
-
-              <div style="margin-top:8px">
-                <label>New batsman name (after wicket)</label>
-                <input id="new-batsman" placeholder="Batsman Name" />
-                <button class="btn primary" id="add-batsman">Add Batsman</button>
-              </div>
-
-              <div style="margin-top:8px">
-                <label>Change bowler (after over)</label>
-                <input id="new-bowler" placeholder="Bowler Name" />
-                <button class="btn primary" id="change-bowler">Change Bowler</button>
-              </div>
-
+            <div class="match-type">
+                <i class="fas fa-trophy"></i> T20 International
             </div>
-
-          </div>
+            <div class="current-over">
+                Over: <span id="current-over">2.3</span>
+            </div>
         </div>
-      </div>
-
-      <div class="footer-note">Keyboard shortcuts: 0-6 for runs, W for wicket, E for end over, S for swap strike.</div>
+        
+        <div class="teams">
+            <div class="team">
+                <div class="team-name">
+                    Australia
+                    <div class="team-score">98/3</div>
+                </div>
+                
+                <div class="batsmen">
+                    <div class="section-title">Batting</div>
+                    <div class="player">
+                        <div class="player-name">
+                            David Warner <span class="striker-indicator">*</span>
+                        </div>
+                        <div class="player-stats">
+                            <div class="stat">42</div>
+                            <div class="stat">28</div>
+                            <div class="stat">4</div>
+                            <div class="stat">2</div>
+                            <div class="stat">150.0</div>
+                        </div>
+                    </div>
+                    <div class="player">
+                        <div class="player-name">
+                            Steve Smith
+                        </div>
+                        <div class="player-stats">
+                            <div class="stat">18</div>
+                            <div class="stat">14</div>
+                            <div class="stat">1</div>
+                            <div class="stat">1</div>
+                            <div class="stat">128.6</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bowlers">
+                    <div class="section-title">Bowling</div>
+                    <div class="player">
+                        <div class="player-name">
+                            Jasprit Bumrah
+                        </div>
+                        <div class="player-stats">
+                            <div class="stat">2.3</div>
+                            <div class="stat">22</div>
+                            <div class="stat">1</div>
+                            <div class="stat">9.6</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team">
+                <div class="team-name">
+                    India
+                    <div class="team-score">-</div>
+                </div>
+                
+                <div class="batsmen">
+                    <div class="section-title">Yet to Bat</div>
+                    <div class="player">
+                        <div class="player-name">
+                            Rohit Sharma
+                        </div>
+                    </div>
+                    <div class="player">
+                        <div class="player-name">
+                            Virat Kohli
+                        </div>
+                    </div>
+                    <div class="player">
+                        <div class="player-name">
+                            KL Rahul
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bowlers">
+                    <div class="section-title">Bowling Options</div>
+                    <div class="player">
+                        <div class="player-name">
+                            Pat Cummins
+                        </div>
+                    </div>
+                    <div class="player">
+                        <div class="player-name">
+                            Mitchell Starc
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="over-progress">
+            <div class="ball">1</div>
+            <div class="ball">4</div>
+            <div class="ball six">6</div>
+            <div class="ball">2</div>
+            <div class="ball">1</div>
+            <div class="ball wicket">W</div>
+            <div class="ball">0</div>
+            <div class="ball four">4</div>
+            <div class="ball">1</div>
+        </div>
+        
+        <div class="controls">
+            <button id="dot-ball">Dot Ball</button>
+            <button id="one-run">1 Run</button>
+            <button id="two-runs">2 Runs</button>
+            <button id="four-runs">Four</button>
+            <button id="six-runs">Six</button>
+            <button id="wide-ball">Wide</button>
+            <button id="no-ball">No Ball</button>
+            <button id="wicket-btn" class="wicket-btn">Wicket</button>
+            <button id="change-striker">Change Striker</button>
+            <button id="new-over">New Over</button>
+        </div>
+        
+        <div class="recent-overs">
+            <div class="section-title">Recent Overs</div>
+            <div class="overs-list">
+                <div class="over">1.3 1 0 4 W 1</div>
+                <div class="over">0.6 1 2 0 1 4 1</div>
+                <div class="over">0.5 0 1 1 2 0</div>
+                <div class="over">0.4 4 0 1 1 0</div>
+                <div class="over">0.3 0 0 1 0 2</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="new-player-modal" id="new-player-modal">
+        <div class="modal-content">
+            <div class="modal-title">New Batsman</div>
+            <input type="text" class="player-input" placeholder="Batsman Name" id="new-batsman-name">
+            <div class="modal-buttons">
+                <button id="cancel-new-player">Cancel</button>
+                <button id="confirm-new-player">Confirm</button>
+            </div>
+        </div>
     </div>
 
-    <div class="card" id="controls-bottom">
-      <div class="row space">
-        <div>
-          <button class="btn ghost" id="undo">Undo last ball</button>
-          <button class="btn ghost" id="export-json">Export JSON</button>
-          <button class="btn ghost" id="clear-storage">Clear saved state</button>
-        </div>
-        <div class="muted">Data stored locally in browser. Works on GitHub Pages.</div>
-      </div>
-    </div>
-  </div>
-
-<script>
-// Simple in-browser scorer. Good for GitHub Pages (static hosting).
-// Core state
-const state = {
-  team: 'Team A',
-  maxOvers: 20,
-  target: null,
-  runs: 0,
-  wickets: 0,
-  balls: 0, // total legal balls
-  batsmen: [], // {name, runs, balls, fours, sixes, striker:boolean}
-  currentBowler: null, // {name, balls, runs, wickets}
-  history: [] // for undo
-};
-
-// helpers
-const el = id => document.getElementById(id);
-
-function save() { localStorage.setItem('cricket_state', JSON.stringify(state)); }
-function load(){
-  const s = localStorage.getItem('cricket_state');
-  if(s){
-    Object.assign(state, JSON.parse(s));
-    render();
-  }
-}
-
-function resetState(){
-  state.team = el('team-name').value || 'Team A';
-  state.maxOvers = parseInt(el('max-overs').value) || 20;
-  state.target = el('target').value ? parseInt(el('target').value) : null;
-  state.runs = 0; state.wickets = 0; state.balls = 0; state.batsmen = [];
-  state.currentBowler = null; state.history = [];
-  // create two opening batsmen placeholders
-  state.batsmen.push({name:'Batsman 1',runs:0,balls:0,fours:0,sixes:0,striker:true});
-  state.batsmen.push({name:'Batsman 2',runs:0,balls:0,fours:0,sixes:0,striker:false});
-  el('bowler-name').value = 'Bowler 1';
-  state.currentBowler = {name:'Bowler 1',balls:0,runs:0,wickets:0};
-  save(); render();
-}
-
-function render(){
-  el('team-title').textContent = state.team;
-  el('score-display').textContent = `${state.runs}/${state.wickets} (${oversBalls()})`;
-  el('target-display').textContent = state.target ? state.target : '-';
-  el('runrate').textContent = calcRR();
-  // batsmen table
-  const tbody = document.querySelector('#batsmen-table tbody');
-  tbody.innerHTML = '';
-  state.batsmen.forEach((b,idx)=>{
-    const tr = document.createElement('tr');
-    const sr = (b.runs && b.balls) ? ((b.runs/b.balls)*100).toFixed(2) : '0.00';
-    tr.innerHTML = `<td>${b.striker?'<span class="strike">▶</span> ':''}${b.name}</td><td>${b.runs}</td><td>${b.balls}</td><td>${b.fours}</td><td>${b.sixes}</td><td>${sr}</td>`;
-    tbody.appendChild(tr);
-  });
-
-  // bowler
-  if(state.currentBowler){
-    el('bowler-name').value = state.currentBowler.name;
-    el('bowler-overs').value = bowlOversStr(state.currentBowler.balls);
-    el('b_o').textContent = Math.floor(state.currentBowler.balls/6);
-    el('b_m').textContent = 0;
-    el('b_r').textContent = state.currentBowler.runs;
-    el('b_w').textContent = state.currentBowler.wickets;
-    el('balls-this-over').value = state.currentBowler.balls % 6;
-  }
-}
-
-function oversBalls(){
-  const ov = Math.floor(state.balls/6);
-  const b = state.balls%6;
-  return `${ov}.${b}`;
-}
-
-function bowlOversStr(balls){
-  const ov = Math.floor(balls/6);
-  const b = balls%6;
-  return `${ov}.${b}`;
-}
-
-function calcRR(){
-  const o = state.balls/6;
-  if(o===0) return '0.00';
-  return (state.runs / o).toFixed(2);
-}
-
-// apply a legal delivery with runs (0-6) or wicket
-function legalDelivery({runs=0,wide=false,noball=false,bye=false,wicket=false}){
-  // deep copy history snapshot
-  state.history.push(JSON.parse(JSON.stringify(state)));
-
-  if(wide){ state.runs += 1; state.currentBowler.runs +=1; /* not a legal ball */ save(); render(); return; }
-  if(noball){ state.runs += 1; state.currentBowler.runs +=1; /* extra, not legal */ save(); render(); return; }
-  if(bye){ state.runs += runs; state.currentBowler.runs += runs; /* runs from byes do not add to batsman */
-    state.balls += 1; state.currentBowler.balls +=1; endOfBall(runs); save(); render(); return; }
-
-  // legal
-  state.runs += runs;
-  state.balls += 1;
-  state.currentBowler.balls += 1;
-  state.currentBowler.runs += runs;
-
-  // update striker batsman
-  const strikerIdx = state.batsmen.findIndex(b=>b.striker);
-  const bat = state.batsmen[strikerIdx];
-  if(!wicket){ bat.runs += runs; bat.balls +=1; if(runs===4) bat.fours +=1; if(runs===6) bat.sixes +=1; }
-  if(wicket){ state.wickets +=1; state.currentBowler.wickets +=1; bat.balls +=1; }
-
-  endOfBall(runs, wicket);
-  save(); render();
-}
-
-function endOfBall(runs=0, wicket=false){
-  // swap strike if odd runs
-  if(!wicket && runs%2===1){ swapStrike(); }
-
-  // check over completed
-  if(state.currentBowler.balls % 6 === 0){
-    // over complete
-    // automatically end over behaviour handled separately; but we also advance nothing here
-  }
-}
-
-function swapStrike(){
-  state.batsmen.forEach(b=> b.striker = !b.striker);
-}
-
-// wicket handling: caller will call legalDelivery with wicket=true then user must add new batsman
-function onWicket(){
-  // mark wicket as legal delivery
-  legalDelivery({runs:0,wicket:true});
-  alert('Wicket! Add new batsman and click Add Batsman to replace the dismissed one.');
-}
-
-function addBatsman(name){
-  // find a dismissed batsman (non striker who has 0 and not in list?) We'll replace the striker who had wicket last.
-  // Find striker with zero? Simpler: after wicket, the last history snapshot shows which batsman had wicket (we used to increment wickets and not remove). We'll replace the striker with new batsman and keep their stats reset.
-  const strikerIdx = state.batsmen.findIndex(b=>b.striker);
-  if(strikerIdx===-1) return;
-  // If that batsman had runs/balls > 0 and wicket occurred, we assume they are out and will be replaced
-  // Replace current striker with new batsman
-  state.batsmen[strikerIdx] = {name:name || ('Batsman ' + (state.batsmen.length+1)),runs:0,balls:0,fours:0,sixes:0,striker:true};
-  save(); render();
-}
-
-function changeBowler(name){
-  // allow change only at end of over ideally. We'll permit but if balls in over not 0, ask confirmation.
-  const balls = state.currentBowler ? (state.currentBowler.balls % 6) : 0;
-  if(balls !== 0){ if(!confirm('Bowler has bowled ' + balls + ' balls this over. Are you sure to change mid-over?')) return; }
-  // push history
-  state.history.push(JSON.parse(JSON.stringify(state)));
-  state.currentBowler = {name:name || 'Bowler',balls:0,runs:0,wickets:0};
-  save(); render();
-}
-
-function endOver(){
-  // end over: reset current bowler's over remainder is already accounted
-  // Over complete only if balls this over is 0? We'll force end and toggle strike.
-  // If balls this over <6, treat remaining as completed zeros (not ideal). We'll require that balls%6===0 for normal end; otherwise allow.
-  if(state.currentBowler.balls %6 !==0){ if(!confirm('Current over is incomplete. Force end over?')) return; }
-  // create new bowler object when user inputs
-  const nb = el('new-bowler').value.trim();
-  if(nb){
-    // finalize current bowler final overs kept
-    state.history.push(JSON.parse(JSON.stringify(state)));
-    state.currentBowler = {name:nb,balls:0,runs:0,wickets:0};
-  }
-  // swap strike at over end
-  swapStrike(); save(); render();
-}
-
-function undo(){
-  const h = state.history.pop(); if(!h) return alert('Nothing to undo');
-  Object.assign(state, h); save(); render();
-}
-
-// wire buttons
-el('new-match').addEventListener('click', resetState);
-
-// run buttons
-document.querySelectorAll('#run-buttons button[data-run]').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    const r = parseInt(b.dataset.run);
-    legalDelivery({runs:r});
-  });
-});
-el('dot').addEventListener('click', ()=> legalDelivery({runs:0}));
-el('wide').addEventListener('click', ()=> legalDelivery({wide:true}));
-el('noball').addEventListener('click', ()=> legalDelivery({noball:true}));
-el('bye').addEventListener('click', ()=>{
-  const r = parseInt(prompt('Bye runs? (number)')||'0'); if(isNaN(r)) return; legalDelivery({bye:true,runs:r});
-});
-el('wicket').addEventListener('click', onWicket);
-el('add-batsman').addEventListener('click', ()=>{
-  const name = el('new-batsman').value.trim(); if(!name){alert('Enter batsman name'); return;} addBatsman(name); el('new-batsman').value='';
-});
-el('change-bowler').addEventListener('click', ()=>{
-  const name = el('new-bowler').value.trim(); if(!name){alert('Enter bowler name'); return;} changeBowler(name); el('new-bowler').value='';
-});
-el('end-over').addEventListener('click', endOver);
-el('swap-strike').addEventListener('click', ()=>{ swapStrike(); save(); render(); });
-el('undo').addEventListener('click', undo);
-el('export-json').addEventListener('click', ()=>{
-  const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'cricket_state.json'; a.click(); URL.revokeObjectURL(url);
-});
-el('clear-storage').addEventListener('click', ()=>{ localStorage.removeItem('cricket_state'); alert('Cleared'); location.reload(); });
-
-// keyboard
-document.addEventListener('keydown',(e)=>{
-  if(e.key>='0' && e.key<='6'){ legalDelivery({runs:parseInt(e.key)}); }
-  if(e.key==='w' || e.key==='W'){ onWicket(); }
-  if(e.key==='e' || e.key==='E'){ endOver(); }
-  if(e.key==='s' || e.key==='S'){ swapStrike(); save(); render(); }
-});
-
-// initial load
-load(); if(!state.batsmen.length) resetState();
-
-</script>
+    <script>
+        // DOM Elements
+        const dotBallBtn = document.getElementById('dot-ball');
+        const oneRunBtn = document.getElementById('one-run');
+        const twoRunsBtn = document.getElementById('two-runs');
+        const fourRunsBtn = document.getElementById('four-runs');
+        const sixRunsBtn = document.getElementById('six-runs');
+        const wideBallBtn = document.getElementById('wide-ball');
+        const noBallBtn = document.getElementById('no-ball');
+        const wicketBtn = document.getElementById('wicket-btn');
+        const changeStrikerBtn = document.getElementById('change-striker');
+        const newOverBtn = document.getElementById('new-over');
+        const newPlayerModal = document.getElementById('new-player-modal');
+        const cancelNewPlayerBtn = document.getElementById('cancel-new-player');
+        const confirmNewPlayerBtn = document.getElementById('confirm-new-player');
+        const newBatsmanNameInput = document.getElementById('new-batsman-name');
+        
+        // Match state
+        let matchState = {
+            currentOver: 2.3,
+            totalRuns: 98,
+            wickets: 3,
+            currentBatsmen: ['David Warner', 'Steve Smith'],
+            striker: 'David Warner',
+            currentBowler: 'Jasprit Bumrah',
+            recentOvers: ['1.3 1 0 4 W 1', '0.6 1 2 0 1 4 1', '0.5 0 1 1 2 0', '0.4 4 0 1 1 0', '0.3 0 0 1 0 2']
+        };
+        
+        // Event Listeners
+        dotBallBtn.addEventListener('click', () => addBall(0));
+        oneRunBtn.addEventListener('click', () => addBall(1));
+        twoRunsBtn.addEventListener('click', () => addBall(2));
+        fourRunsBtn.addEventListener('click', () => addBall(4));
+        sixRunsBtn.addEventListener('click', () => addBall(6));
+        wideBallBtn.addEventListener('click', () => addBall('Wd'));
+        noBallBtn.addEventListener('click', () => addBall('Nb'));
+        wicketBtn.addEventListener('click', showNewPlayerModal);
+        changeStrikerBtn.addEventListener('click', changeStriker);
+        newOverBtn.addEventListener('click', startNewOver);
+        cancelNewPlayerBtn.addEventListener('click', () => newPlayerModal.style.display = 'none');
+        confirmNewPlayerBtn.addEventListener('click', addNewBatsman);
+        
+        // Functions
+        function addBall(runs) {
+            // In a real app, this would update the match state and UI
+            console.log(`Ball played: ${runs}`);
+            // For demo purposes, we'll just show an alert
+            alert(`Added ${runs} run(s) to the score`);
+        }
+        
+        function showNewPlayerModal() {
+            newPlayerModal.style.display = 'flex';
+        }
+        
+        function addNewBatsman() {
+            const name = newBatsmanNameInput.value.trim();
+            if (name) {
+                // In a real app, this would update the match state and UI
+                console.log(`New batsman: ${name}`);
+                alert(`New batsman ${name} added`);
+                newPlayerModal.style.display = 'none';
+                newBatsmanNameInput.value = '';
+            } else {
+                alert('Please enter a name for the new batsman');
+            }
+        }
+        
+        function changeStriker() {
+            // In a real app, this would update the match state and UI
+            console.log('Striker changed');
+            alert('Striker changed');
+        }
+        
+        function startNewOver() {
+            // In a real app, this would update the match state and UI
+            console.log('New over started');
+            alert('New over started with a new bowler');
+        }
+        
+        // Initialize the app
+        document.getElementById('current-over').textContent = matchState.currentOver;
+    </script>
 </body>
 </html>
